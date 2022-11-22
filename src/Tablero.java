@@ -7,13 +7,12 @@ public class Tablero
 {
     private final int f = 10;//fila
     private final int c = 10;//columna
-    private boolean[][] visible;
-    private int[][] oculto;
-    private int[][] minas;
-    private final int MINAS = 15;
+    private final boolean[][] visible;
+    private final int[][] oculto;
+    private final int[][] minas;
     //las posicionX y posicionY son una forma de representar el contorno de una casilla
-    private int[] posicionX = {-1,-1,-1, 0, 0, 1, 1, 1};
-    private int[] posicionY = {-1, 0, 1,-1, 1,-1, 0, 1};
+    private final int[] posicionX = {-1,-1,-1, 0, 0, 1, 1, 1};
+    private final int[] posicionY = {-1, 0, 1,-1, 1,-1, 0, 1};
     private int numCasillas = 85;
     public Tablero(){
         visible = new boolean[f][c];
@@ -61,7 +60,8 @@ public class Tablero
 
     private void colocarMinas(int fila,int columna){
         int contador=0;
-        while(contador<=MINAS){
+        int MINAS = 15;
+        while(contador<= MINAS){
             int x = (int)(Math.random()*f+1);
             int y = (int)(Math.random()*c+1);
             if(!((x==fila && y==columna) || (minas[x][y]==1))){
@@ -86,7 +86,7 @@ public class Tablero
         for(int i=0;i<f;i++){
             System.out.print(" "+ i + " |");
             for(int j=0;j<c;j++){
-                if(visible[i][j]==true)
+                if(visible[i][j])
                     System.out.print(" "+ oculto[i+1][j+1] + " ");
                 else
                     System.out.print(" " + "*" + " ");
@@ -137,17 +137,16 @@ public class Tablero
                 int y = columna+posicionY[var]+1;
                 switch(oculto[x][y]){
                     case 0:
-                        if(visible[x-1][y-1]==false){
+                        if(!visible[x - 1][y - 1]){
                             hacerVisible(x-1,y-1);
                             scanear(x-1,y-1);
                         }
                         break;
                     case 9:
-                        break;
                     case -1:
                         break;
                     default:
-                        if(visible[x-1][y-1]==false)
+                        if(!visible[x - 1][y - 1])
                             hacerVisible(x-1,y-1);
                 }
             }

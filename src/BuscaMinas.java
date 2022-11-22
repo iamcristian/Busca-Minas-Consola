@@ -11,7 +11,7 @@ import java.util.InputMismatchException;
  */
 public class BuscaMinas {
     private Tablero tablero;
-    private Scanner sc;
+    private final Scanner sc;
     private boolean enJuego = false;
     boolean primeraVez = false;
     public BuscaMinas(){
@@ -25,32 +25,31 @@ public class BuscaMinas {
     }
 
     private void menu(){
-        boolean salir = false;
         do{
             printMenu();
             try{
                 int opcion = sc.nextInt();
-                switch(opcion){
-                    case 1:
+                switch (opcion) {
+                    case 1 -> {
                         limpiarConsola();
                         jugar();
-                        break;
-                    case 2:
+                    }
+                    case 2 -> {
                         limpiarConsola();
                         System.out.println("Saliste del juego");
                         System.exit(0);
-                        salir = true;
-                        break;
-                    default:
+                    }
+                    default -> {
                         limpiarConsola();
                         System.out.println("ESCOJA UNA OPCION CORRECTA");
+                    }
                 }
             }catch(InputMismatchException e){
                 sc.next(); //Se coloca para que no se haga un bucle infinito
                 limpiarConsola();
                 System.out.println("LA OPCION DEBE SER UN NUMERO");
             }
-        }while(!salir);
+        }while(true);
     }
 
     private void jugar(){
@@ -73,7 +72,7 @@ public class BuscaMinas {
                     if(columna>=0 && columna<10){
                         limpiarConsola();
                         System.out.println("La posicion escogida es: pos[" + fila + "][" + columna + "]");
-                        if(primeraVez == false){
+                        if(!primeraVez){
                             tablero.generarTablero(fila,columna);
                             seleccionarCasilla(fila,columna);
                             primeraVez = true;
@@ -95,11 +94,11 @@ public class BuscaMinas {
                 System.out.println("EMPIECE DE NUEVO");
                 sc.next();
             }
-        }while(enJuego==true);
+        }while(enJuego);
     }
 
     private void seleccionarCasilla(int fila,int columna){
-        if(tablero.esMina(fila,columna)==false){
+        if(!tablero.esMina(fila, columna)){
             tablero.hacerVisible(fila,columna);
             tablero.scanear(fila,columna);
             tablero.printTablero();
